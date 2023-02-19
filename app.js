@@ -18,6 +18,7 @@ const viewRouter = require('./routes/viewRoutes');
 const bookingRouter = require('./routes/bookingRoutes');
 const { urlencoded } = require('body-parser');
 
+//start express app
 const app = express();
 //--------------------------------------------------------
 
