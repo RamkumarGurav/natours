@@ -28,7 +28,7 @@ mongoose
   .then(() => console.log('Successfully connected to Database'));
 
 // console.log(process.env.NODE_ENV); //ouput=>development if npm run start:prod
-const port = process.env.PORT || 8000;
+const port = process.env.PORT || 8000;//while addin env variables to heroku dont add PORT bcz heroku generates its own port number
 const server = app.listen(port, () => {
   console.log(`App is running on port ${port}...`);
 });
