@@ -8,6 +8,7 @@ const xss = require('xss-clean');
 const hpp = require('hpp');
 const path = require('path');
 const cookieParser = require('cookie-parser');
+const compression=require('compression')
 
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
@@ -87,6 +88,9 @@ app.use(
     ], //allowing some parameters to run more than one time eg-tours/duration=5&duration=9 -this gives tours which have duration of 5 and 9
   })
 );
+
+//middleware that compresses text and html
+app.use(compression())
 
 //Test middleware-for some testing if needed
 app.use((req, res, next) => {

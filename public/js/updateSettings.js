@@ -8,7 +8,7 @@ export const updateData = async (data) => {
   try {
     const res = await axios({
       method: 'PATCH',
-      url: 'http://localhost:5000/api/v1/users/updateMe',
+      url: '/api/v1/users/updateMe',
       data,
     });
     if (res.data.status === 'success') {
@@ -33,7 +33,7 @@ export const updateMyPassword = async (
   try {
     const res = await axios({
       method: 'PATCH',
-      url: 'http://localhost:5000/api/v1/users/updateMyPassword',
+      url: '/api/v1/users/updateMyPassword',
       data: {
         passwordCurrent,
         password,
@@ -58,8 +58,8 @@ export const updateMyPassword = async (
 //   try {
 //     const url =
 //       type === 'password'
-//         ? 'http://localhost:5000/api/v1/users/updateMyPassword'
-//         : 'http://localhost:5000/api/v1/users/updateMe';
+//         ? '/api/v1/users/updateMyPassword'
+//         : '/api/v1/users/updateMe';
 //     const res = await axios({
 //       method: 'PATCH',
 //       url: url,
@@ -80,10 +80,9 @@ export const updateMyPassword = async (
 //---------Generating Reset Pawword Email-------------
 export const passwordResetEmail = async (email) => {
   try {
-
     const res = await axios({
       method: 'POST',
-      url: `http://localhost:5000/api/v1/users/forgotPassword`,
+      url: `/api/v1/users/forgotPassword`,
       data: {
         email,
       },
@@ -106,7 +105,7 @@ export const passwordReset = async (password, passwordConfirm, token) => {
   try {
     const res = await axios({
       method: 'PATCH',
-      url: `http://localhost:5000/api/v1/users/resetPassword/${token}`,
+      url: `/api/v1/users/resetPassword/${token}`,
       data: {
         password,
         passwordConfirm,

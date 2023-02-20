@@ -9,7 +9,7 @@ export const login = async (email, password) => {
   try {
     const res = await axios({
       method: 'POST',
-      url: 'http://localhost:5000/api/v1/users/login',
+      url: '/api/v1/users/login', //IMPwhen u host bothe api and website on same platform with same url we can use this type url which automatically converts to full url '<protoco/>://<host>/api/v1/users/login',// if api and fronten website have diff urls then u have to use full url of api here
       data: {
         email,
         password,
@@ -35,7 +35,7 @@ export const logout = async () => {
     //when user hitts logout button it hits the 'logout' route of api which sends a normal jwt cookie with short lifetime and when page is reloaded again bowser send the previously stored cookie to server for verification and fails and gives error and when it gives error we move to next middleware where browser renders differnent page if it doesnt have user data
     const res = await axios({
       method: 'GET',
-      url: 'http://localhost:5000/api/v1/users/logout',
+      url: '/api/v1/users/logout',
     });
 
     if (res.data.status === 'success') {
@@ -49,5 +49,5 @@ export const logout = async () => {
   }
 };
 //--------------------------------------------------------
-  
+
 //--------------------------------------------------------

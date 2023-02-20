@@ -143,7 +143,8 @@ var login = /*#__PURE__*/function () {
           _context.next = 3;
           return (0,axios__WEBPACK_IMPORTED_MODULE_23__["default"])({
             method: 'POST',
-            url: 'http://localhost:5000/api/v1/users/login',
+            url: '/api/v1/users/login',
+            //IMPwhen u host bothe api and website on same platform with same url we can use this type url which automatically converts to full url '<protoco/>://<host>/api/v1/users/login',// if api and fronten website have diff urls then u have to use full url of api here
             data: {
               email: email,
               password: password
@@ -187,7 +188,7 @@ var logout = /*#__PURE__*/function () {
           _context2.next = 3;
           return (0,axios__WEBPACK_IMPORTED_MODULE_23__["default"])({
             method: 'GET',
-            url: 'http://localhost:5000/api/v1/users/logout'
+            url: '/api/v1/users/logout'
           });
         case 3:
           res = _context2.sent;
@@ -360,10 +361,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var core_js_modules_es_object_set_prototype_of_js__WEBPACK_IMPORTED_MODULE_18___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_object_set_prototype_of_js__WEBPACK_IMPORTED_MODULE_18__);
 /* harmony import */ var core_js_modules_es_array_slice_js__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! core-js/modules/es.array.slice.js */ "./node_modules/core-js/modules/es.array.slice.js");
 /* harmony import */ var core_js_modules_es_array_slice_js__WEBPACK_IMPORTED_MODULE_19___default = /*#__PURE__*/__webpack_require__.n(core_js_modules_es_array_slice_js__WEBPACK_IMPORTED_MODULE_19__);
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! axios */ "./node_modules/axios/lib/axios.js");
-/* harmony import */ var regenerator_runtime__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! regenerator-runtime */ "./node_modules/regenerator-runtime/runtime.js");
-/* harmony import */ var regenerator_runtime__WEBPACK_IMPORTED_MODULE_20___default = /*#__PURE__*/__webpack_require__.n(regenerator_runtime__WEBPACK_IMPORTED_MODULE_20__);
-/* harmony import */ var _alerts__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./alerts */ "./public/js/alerts.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! axios */ "./node_modules/axios/lib/axios.js");
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 
 
@@ -390,8 +388,9 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 /* eslint-disable */
 
+//--------------------------------------------------------
 
-
+//-------------Creating Review-----------------------------
 var createReview = /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(tourId, review, rating) {
     var res;
@@ -399,33 +398,32 @@ var createReview = /*#__PURE__*/function () {
       while (1) switch (_context.prev = _context.next) {
         case 0:
           _context.prev = 0;
-          console.log(tourId, review, rating);
-          _context.next = 4;
-          return (0,axios__WEBPACK_IMPORTED_MODULE_22__["default"])({
+          _context.next = 3;
+          return (0,axios__WEBPACK_IMPORTED_MODULE_20__["default"])({
             method: 'POST',
-            url: "http://localhost:5000/api/v1/tours/".concat(tourId, "/reviews"),
+            url: "/api/v1/tours/".concat(tourId, "/reviews"),
             data: {
               review: review,
               rating: rating
             }
           });
-        case 4:
+        case 3:
           res = _context.sent;
           if (res.data.status === 'success') {
             //forcing to reload the current page from server so that when browser recieves new 'jwt' cookie with normal text other than token  it fails to login and then server renders the homepage
             location.reload(true); //truue reload from the server  which sends fresh page//and then moving to homepage
           }
-          _context.next = 11;
+          _context.next = 10;
           break;
-        case 8:
-          _context.prev = 8;
+        case 7:
+          _context.prev = 7;
           _context.t0 = _context["catch"](0);
           console.log(_context.t0);
-        case 11:
+        case 10:
         case "end":
           return _context.stop();
       }
-    }, _callee, null, [[0, 8]]);
+    }, _callee, null, [[0, 7]]);
   }));
   return function createReview(_x, _x2, _x3) {
     return _ref.apply(this, arguments);
@@ -533,7 +531,7 @@ var signup = /*#__PURE__*/function () {
           _context.next = 3;
           return (0,axios__WEBPACK_IMPORTED_MODULE_23__["default"])({
             method: 'POST',
-            url: 'http://localhost:5000/api/v1/users/signup',
+            url: '/api/v1/users/signup',
             data: userData
           });
         case 3:
@@ -655,28 +653,26 @@ var bookTour = /*#__PURE__*/function () {
         case 0:
           _context.prev = 0;
           _context.next = 3;
-          return (0,axios__WEBPACK_IMPORTED_MODULE_21__["default"])("http://localhost:5000/api/v1/bookings/checkout-session/".concat(tourId));
+          return (0,axios__WEBPACK_IMPORTED_MODULE_21__["default"])("/api/v1/bookings/checkout-session/".concat(tourId));
         case 3:
           session = _context.sent;
-          console.log(session);
-          //step2)Create checkout form + charge credit card
-          _context.next = 7;
+          _context.next = 6;
           return stripe.redirectToCheckout({
             sessionId: session.data.session.id
           });
-        case 7:
-          _context.next = 13;
+        case 6:
+          _context.next = 12;
           break;
-        case 9:
-          _context.prev = 9;
+        case 8:
+          _context.prev = 8;
           _context.t0 = _context["catch"](0);
           console.log(_context.t0);
           (0,_alerts__WEBPACK_IMPORTED_MODULE_20__.showAlert)('error', _context.t0);
-        case 13:
+        case 12:
         case "end":
           return _context.stop();
       }
-    }, _callee, null, [[0, 9]]);
+    }, _callee, null, [[0, 8]]);
   }));
   return function bookTour(_x) {
     return _ref.apply(this, arguments);
@@ -784,7 +780,7 @@ var updateData = /*#__PURE__*/function () {
           _context.next = 3;
           return (0,axios__WEBPACK_IMPORTED_MODULE_22__["default"])({
             method: 'PATCH',
-            url: 'http://localhost:5000/api/v1/users/updateMe',
+            url: '/api/v1/users/updateMe',
             data: data
           });
         case 3:
@@ -825,7 +821,7 @@ var updateMyPassword = /*#__PURE__*/function () {
           _context2.next = 3;
           return (0,axios__WEBPACK_IMPORTED_MODULE_22__["default"])({
             method: 'PATCH',
-            url: 'http://localhost:5000/api/v1/users/updateMyPassword',
+            url: '/api/v1/users/updateMyPassword',
             data: {
               passwordCurrent: passwordCurrent,
               password: password,
@@ -864,8 +860,8 @@ var updateMyPassword = /*#__PURE__*/function () {
 //   try {
 //     const url =
 //       type === 'password'
-//         ? 'http://localhost:5000/api/v1/users/updateMyPassword'
-//         : 'http://localhost:5000/api/v1/users/updateMe';
+//         ? '/api/v1/users/updateMyPassword'
+//         : '/api/v1/users/updateMe';
 //     const res = await axios({
 //       method: 'PATCH',
 //       url: url,
@@ -890,18 +886,16 @@ var passwordResetEmail = /*#__PURE__*/function () {
     return _regeneratorRuntime().wrap(function _callee3$(_context3) {
       while (1) switch (_context3.prev = _context3.next) {
         case 0:
-          console.log('1');
-          _context3.prev = 1;
-          console.log('2');
-          _context3.next = 5;
+          _context3.prev = 0;
+          _context3.next = 3;
           return (0,axios__WEBPACK_IMPORTED_MODULE_22__["default"])({
             method: 'POST',
-            url: "http://localhost:5000/api/v1/users/forgotPassword",
+            url: "/api/v1/users/forgotPassword",
             data: {
               email: email
             }
           });
-        case 5:
+        case 3:
           res = _context3.sent;
           if (res.data.status === 'success') {
             (0,_alerts__WEBPACK_IMPORTED_MODULE_21__.showAlert)('success', 'Password Reset Link sent to your Email');
@@ -909,18 +903,18 @@ var passwordResetEmail = /*#__PURE__*/function () {
             //   location.assign('/');
             // }, 1500);
           }
-          _context3.next = 13;
+          _context3.next = 11;
           break;
-        case 9:
-          _context3.prev = 9;
-          _context3.t0 = _context3["catch"](1);
+        case 7:
+          _context3.prev = 7;
+          _context3.t0 = _context3["catch"](0);
           console.log(_context3.t0);
           (0,_alerts__WEBPACK_IMPORTED_MODULE_21__.showAlert)('error', _context3.t0.response.data.message);
-        case 13:
+        case 11:
         case "end":
           return _context3.stop();
       }
-    }, _callee3, null, [[1, 9]]);
+    }, _callee3, null, [[0, 7]]);
   }));
   return function passwordResetEmail(_x5) {
     return _ref3.apply(this, arguments);
@@ -939,7 +933,7 @@ var passwordReset = /*#__PURE__*/function () {
           _context4.next = 3;
           return (0,axios__WEBPACK_IMPORTED_MODULE_22__["default"])({
             method: 'PATCH',
-            url: "http://localhost:5000/api/v1/users/resetPassword/".concat(token),
+            url: "/api/v1/users/resetPassword/".concat(token),
             data: {
               password: password,
               passwordConfirm: passwordConfirm
@@ -25623,8 +25617,7 @@ if (signupForm) {
               password: password,
               passwordConfirm: passwordConfirm,
               role: role
-            };
-            console.log(userData);
+            }; // console.log(userData);
             (0,_signup__WEBPACK_IMPORTED_MODULE_25__.signup)(userData);
             document.getElementById('name').value = ' ';
             document.getElementById('email').value = ' ';
@@ -25632,7 +25625,7 @@ if (signupForm) {
             document.getElementById('password-confirm').value = ' ';
             document.getElementById('role').value = ' ';
             document.querySelector('.btnn-signup').innerHTML = 'submit';
-          case 16:
+          case 15:
           case "end":
             return _context3.stop();
         }
@@ -25720,7 +25713,7 @@ if (bookTourBtn) {
 
 //--------------------------------------------------------
 
-//--------------------------------------------------------
+//-------creating a Review------------------------------------------
 if (reviewForm) {
   reviewForm.addEventListener('submit', /*#__PURE__*/function () {
     var _ref6 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6(e) {

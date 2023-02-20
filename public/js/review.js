@@ -8,7 +8,7 @@ export const createReview = async (tourId, review, rating) => {
     // console.log(tourId, review, rating);
     const res = await axios({
       method: 'POST',
-      url: `http://localhost:5000/api/v1/tours/${tourId}/reviews`,
+      url: `/api/v1/tours/${tourId}/reviews`,
       data: {
         review,
         rating,
