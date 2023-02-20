@@ -8,16 +8,19 @@ const xss = require('xss-clean');
 const hpp = require('hpp');
 const path = require('path');
 const cookieParser = require('cookie-parser');
-const compression = require('compression'); 
-const cors = require('cors'); 
+const compression = require('compression');
+const cors = require('cors');
+const bodyParser = require('body-parser');
 
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
+const bookingController = require('./controllers/bookingController');
 const tourRouter = require('./routes/tourRoutes');
 const userRouter = require('./routes/userRoutes');
 const reviewRouter = require('./routes/reviewRoutes');
 const viewRouter = require('./routes/viewRoutes');
 const bookingRouter = require('./routes/bookingRoutes');
+
 const { urlencoded } = require('body-parser');
 
 //start express app
@@ -25,7 +28,7 @@ const app = express();
 //--------------------------------------------------------
 
 //--------------------------------------------------------
-app.enable('trust proxy');//enabling trust proxy bcz heroku acts as proxy and our needs to trust it
+app.enable('trust proxy'); //enabling trust proxy bcz heroku acts as proxy and our needs to trust it
 
 //setting view engine as pug
 app.set('view engine', 'pug');
@@ -40,13 +43,12 @@ app.set('views', path.join(__dirname, 'views')); //here path.join(__dirname, 'vi
 
 //Implementing CORS -Cross-Origin Resource Sharing (CORS) is an HTTP-header based mechanism that allows a server to indicate any origins (domain, scheme, or port) other than its own from which a browser should permit loading resources.
 //this enables other websites to access our api
-app.use(cors());//it adds some headers
+app.use(cors()); //it adds some headers//"'Access-conterol-allow-origin':*"-->Access-conterol-allow-origin header set to everything
 //if our api(backend) is at 'https://api.natours.com' and our frontend at 'https://natours.com' then we need to set origin as frontend url in cors in our app
 //app.use(cors({origin:'https://natours.com'}))
 
-
 //enabling cors for all the routes in our app //here 'options' is a http method just like get,post..which is executed before real http method is executed this method asks server whether next next real http method is safe or not - so here this is enabled for all the routes so that 'delete','patch' and 'put' methods are made saf and allowed
-app.options('*',cors())
+app.options('*', cors());
 
 //middleware for serving static files in root route
 app.use(express.static(path.join(__dirname, 'public')));
@@ -71,6 +73,15 @@ const limiter = rateLimit({
   message: 'Too many requests from this IP, Please try again in an hour!', //error message if they exceeds 100 requests wihtin 1 hour
 });
 app.use('/api', limiter); //appling this middleware to all the route that starts with '/api'
+
+//--------------after deployment--------------------------
+// //adding 'webhook-checkout' route before data is converted to json bcz for webhooks we need raw data/body thats why we use 'bodyParser.raw() middleware in this route //u can also use inbuilt 'express.raw()' intead of bodyParser
+// app.post(
+//   '/webhook-checkout',
+//   bodyParser.raw(),
+//   bookingController.webhookCheckout
+// );
+//--------------------------------------------------------
 
 //Body parser middlware
 app.use(express.json({ limit: '50mb' })); //middleware for reading data from the body into req.body//here if body contains more than 10kb of data then it will not read
