@@ -49,3 +49,13 @@ process.on('unhandledRejection', (err) => {
   });
 });
 //w----------------------------------------------------w//
+
+//-------------handling SIGTERM SIGNALS OF HEROKU----------
+//heroku sends sigterm signal to node application after every 24 hrs to shuttdown our app but this makes our app to shutdown abtruptly so we need to shutdown our app gracefully
+process.on('SIGTERM', () => {
+  console.log('👋 SIGTERM SIGNAL RECIEVED, Shutting down gracefully');
+ 
+  server.close(() => {
+console.log('🔥Process terminated!')//here we dont use 'process.exit(1);' bcz heroku's sigterm itself exits the process    
+  });
+});

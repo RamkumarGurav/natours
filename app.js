@@ -8,7 +8,7 @@ const xss = require('xss-clean');
 const hpp = require('hpp');
 const path = require('path');
 const cookieParser = require('cookie-parser');
-const compression=require('compression')
+const compression = require('compression');
 
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
@@ -24,6 +24,8 @@ const app = express();
 //--------------------------------------------------------
 
 //--------------------------------------------------------
+app.enable('trust proxy');//enabling trust proxy bcz heroku acts as proxy and our needs to trust it
+
 //setting view engine as pug
 app.set('view engine', 'pug');
 //setting views to folder that contains views/templates of app
@@ -90,7 +92,7 @@ app.use(
 );
 
 //middleware that compresses text and html
-app.use(compression())
+app.use(compression());
 
 //Test middleware-for some testing if needed
 app.use((req, res, next) => {
@@ -114,8 +116,7 @@ app.use('/api/v1/users', userRouter);
 ///step2-request passing through reviewRouter middlewares and then moves to file userRoutes.js
 app.use('/api/v1/reviews', reviewRouter);
 
-
-app.use('/api/v1/bookings',bookingRouter)
+app.use('/api/v1/bookings', bookingRouter);
 
 //HANDLING UNHANDLED ROUTES-alway put this in last order of  routes stack -because this route catches all the urls that are not catched by above routes
 app.all('*', (req, res, next) => {
@@ -136,5 +137,3 @@ app.all('*', (req, res, next) => {
 app.use(globalErrorHandler); //here globalErrorHandler middleware is called and a response is sent for Error
 
 module.exports = app;
-
-

@@ -22,21 +22,32 @@ const signToken = (id) => {
 
 //--------------------------------------------------------
 // sending jwt token to server via cookies
-const createSendToken = (user, statusCode, res) => {
+const createSendToken = (user, statusCode, req, res) => {
   const token = signToken(user._id);
+  //--------------dev mode------------------------------------------
+  // const cookieOptions = {
+  //   //here'jwt' is the name of the cookie and 'token' is the data is inside this cookie
+  //   //new Date(12357890(present time in ms)+JWT_COOKIE_EXPIRES_IN *1day)=Tue Feb 14 2023 07:58:12 GMT+0530 (India Standard Time)
+  //   expires: new Date(
+  //     Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
+  //   ), //browser will delete this cookie after 90 days
+  //   secure: false, //if secure is true then this cookie will be sent through only https connection (encrpted connect)
+  //   httpOnly: true, //this makes- this cookie can't be access or modified by the browser.or even browser cant delete this cookie//this makes the browser only store the cookie and send it along request every time a request made to the website server(where cookie originally created )
+  // };
+
+  // if (process.env.NODE_ENV === 'production') {
+  //   cookieOptions.secure = true; //making secure true in production mode bcz we use https in production during development we use http
+  // }
+  //--------------------------------------------------------
   const cookieOptions = {
     //here'jwt' is the name of the cookie and 'token' is the data is inside this cookie
     //new Date(12357890(present time in ms)+JWT_COOKIE_EXPIRES_IN *1day)=Tue Feb 14 2023 07:58:12 GMT+0530 (India Standard Time)
     expires: new Date(
       Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
     ), //browser will delete this cookie after 90 days
-    secure: false, //if secure is true then this cookie will be sent through only https connection (encrpted connect)
+    secure: req.secure || req.headers['x-forwarded-proto'] === 'https', //if secure is true then this cookie will be sent through only https connection (encrpted connect)
     httpOnly: true, //this makes- this cookie can't be access or modified by the browser.or even browser cant delete this cookie//this makes the browser only store the cookie and send it along request every time a request made to the website server(where cookie originally created )
   };
-
-  if (process.env.NODE_ENV === 'production') {
-    cookieOptions.secure = true; //making secure true in production mode bcz we use https in production during development we use http
-  }
 
   //attaching cookie to response object
   res.cookie('jwt', token, cookieOptions);
@@ -70,7 +81,7 @@ exports.signup = catchAsync(async (req, res, next) => {
   const url = `${req.protocol}://${req.get('host')}/me`; //url where  user changes his photo
   await new Email(newUser, url).sendWelcome(); //here await is used bcz in Email class sendwelcome() method is asynchronous
 
-  createSendToken(newUser, 201, res);
+  createSendToken(newUser, 201, req, res);
 });
 //--------------------------------------------------------
 
@@ -90,7 +101,7 @@ exports.login = catchAsync(async (req, res, next) => {
     return next(new AppError('Invalid email or password', 401)); //401-unathorised
   }
   //IMPstep3)if everything is ok then send token to client
-  createSendToken(user, 200, res);
+  createSendToken(user, 200, req, res);
 });
 
 //--------------------------------------------------------
@@ -292,7 +303,7 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
   //->done using document presave middlware
 
   //step4)Loggin the user by sending him the jwt token
-  createSendToken(user, 200, res);
+  createSendToken(user, 200, req, res);
 });
 //--------------------------------------------------------
 
@@ -316,7 +327,7 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
   //note- for all password related operation first use findOne method then use .save()method dont use .findOneUpdate() method directly
 
   //step3)log user in ,send jwt token
-  createSendToken(user, 200, res);
+  createSendToken(user, 200, req, res);
 
   next();
 });
