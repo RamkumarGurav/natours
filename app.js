@@ -8,7 +8,8 @@ const xss = require('xss-clean');
 const hpp = require('hpp');
 const path = require('path');
 const cookieParser = require('cookie-parser');
-const compression = require('compression');
+const compression = require('compression'); 
+const cors = require('cors'); 
 
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
@@ -36,6 +37,17 @@ app.set('views', path.join(__dirname, 'views')); //here path.join(__dirname, 'vi
 //--------------------------------------------------------
 //GLOBAL MIDDLEWARES
 //step1-request passing through middlewares
+
+//Implementing CORS -Cross-Origin Resource Sharing (CORS) is an HTTP-header based mechanism that allows a server to indicate any origins (domain, scheme, or port) other than its own from which a browser should permit loading resources.
+//this enables other websites to access our api
+app.use(cors());//it adds some headers
+//if our api(backend) is at 'https://api.natours.com' and our frontend at 'https://natours.com' then we need to set origin as frontend url in cors in our app
+//app.use(cors({origin:'https://natours.com'}))
+
+
+//enabling cors for all the routes in our app //here 'options' is a http method just like get,post..which is executed before real http method is executed this method asks server whether next next real http method is safe or not - so here this is enabled for all the routes so that 'delete','patch' and 'put' methods are made saf and allowed
+app.options('*',cors())
+
 //middleware for serving static files in root route
 app.use(express.static(path.join(__dirname, 'public')));
 
